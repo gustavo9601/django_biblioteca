@@ -1,0 +1,10 @@
+<h1>Lista libros por categoria</h1>
+
+<hr>
+<ul>
+    {% for libro in libros %}
+        <li>{{ libro.titulo }} | {{ libro.fecha_publicacion }}</li>
+    {% endfor %}
+</ul>
+
+{{autores}}
