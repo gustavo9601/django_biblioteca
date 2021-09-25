@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models import Q
+from django.db.models import Q, Count
 
 
 class LibroManager(models.Manager):
@@ -25,6 +25,26 @@ class LibroManager(models.Manager):
             categoria__id=id_categoria
         ).order_by('titulo')
 
+    def add_autor_libro(self, libro_id, autor_id):
+        # .get(id=libro_id) // devuelve un solo registro
+        libro = self.get(id=libro_id)
+        # libro.<<relacion_many_to_many>>.add(objeto a añadir)
+        libro.autores.add(autor_id)
+        return libro
+
+    def eliminar_autor_libro(self, libro_id, autor_id):
+        # .get(id=libro_id) // devuelve un solo registro
+        libro = self.get(id=libro_id)
+        libro.objects.remove(autor_id)
+        return libro
+
+    def list_libros_cantidad_prestamos(self):
+        # Devuelve un diccionario con los nombres especificados, util cuando se requier un valor
+        # .aggregate // permite realizar agrupaciones y operaciones sobre relaciones
+        return self.aggregate(
+            numero_prestamos=Count('libro_prestamo') # libro_prestamo => related_name en prestamo con libro
+        )
+
 
 class CategoriaManager(models.Manager):
     """Managers para el modelo libro"""
@@ -36,3 +56,12 @@ class CategoriaManager(models.Manager):
         return self.filter(
             categoria_libro__autores__id=id_autor
         ).distinct()
+
+    def listar_categorias_cantidad_de_libros(self):
+        # Retorna un queryset como valor añadido al queryset inicial del modelo,
+        # util cuando se requiere recibir el objeto como tal, ya que iterara sobre cada registro del modelo
+        # annotate => permite realizar agrupaciones y operaciones sobre relaciones
+
+        return self.annotate(
+            cantidad_libros=Count('categoria_libro')  # 'categoria_libro => related Name || nombre de la relacion
+        )

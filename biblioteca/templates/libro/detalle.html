@@ -1,0 +1,11 @@
+<h1>Detalle Libro {{ libro.titulo }}</h1>
+<p>{{ libro.fecha_publicacion }}</p>
+<p>{{ libro.categoria }}</p>
+<hr>
+<h4>Relacion muchos a muchos autores</h4>
+<ul>
+    {#libro.autores.all => accede a la relacion de muchos a muchos libro con autores#}
+    {% for autor in libro.autores.all %}
+        <li>{{ autor }}</li>
+    {% endfor %}
+</ul>

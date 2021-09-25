@@ -1,5 +1,6 @@
 from django.db import models
 from applications.libro.models import Libro
+from .managers import PrestamoManager
 
 
 # Create your models here.
@@ -18,11 +19,14 @@ class Lector(models.Model):
 
 
 class Prestamo(models.Model):
+    # libro_prestamo => la relacion inversa desde el otro modelo
     lector = models.ForeignKey(Lector, on_delete=models.CASCADE)
-    libro = models.ForeignKey(Libro, on_delete=models.CASCADE)
+    libro = models.ForeignKey(Libro, on_delete=models.CASCADE, related_name='libro_prestamo')
     fecha_prestamo = models.DateField('Fecha de prestamo')
     fecha_devolucion = models.DateField(blank=True, null=True)
     devuelto = models.BooleanField('Ya se devolivio?', default=False)
+
+    objects = PrestamoManager()
 
     class Meta:
         db_table = 'prestamos'

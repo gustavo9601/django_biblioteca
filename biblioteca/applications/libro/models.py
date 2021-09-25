@@ -33,4 +33,14 @@ class Libro(models.Model):
         db_table = 'libros'
 
     def __str__(self):
-        return f"{self.titulo} | {self.fecha_publicacion}"
+        return f"{self.id} | {self.titulo} | {self.fecha_publicacion}"
+
+
+"""
+Implementando trigram Postgresql
+// Permite separar en partes un valor para hacer un like %% super dotado
+
+\c nombre_bd
+CREATE EXTENSION pg_trgm;
+CREATE INDEX <<name_idx>> ON "<<name_app>>_<<name_model>>" USING GIN(<<name_field_to_search>> gin_trgm_ops);
+"""
