@@ -52,8 +52,11 @@ class LibroManager(models.Manager):
     // Solo funciona si el string es mayor a 3 de longitud
 
     \c nombre_bd
-    CREATE EXTENSION pg_trgm;
+    CREATE EXTENSION IF NOT EXISTS pg_trgm
     CREATE INDEX <<name_idx>> ON "<<name_app>>_<<name_model>>" USING GIN(<<name_field_to_search>> gin_trgm_ops);
+    
+    # Otro
+    CREATE INDEX locations_name_trigram ON locations USING gist(name gist_trgm_ops);
     """
 
     def busqueda_titulo_libro_trigram(self, consulta):
