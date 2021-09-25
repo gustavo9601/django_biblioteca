@@ -42,7 +42,24 @@ class LibroManager(models.Manager):
         # Devuelve un diccionario con los nombres especificados, util cuando se requier un valor
         # .aggregate // permite realizar agrupaciones y operaciones sobre relaciones
         return self.aggregate(
-            numero_prestamos=Count('libro_prestamo') # libro_prestamo => related_name en prestamo con libro
+            numero_prestamos=Count('libro_prestamo')  # libro_prestamo => related_name en prestamo con libro
+        )
+
+    """
+    Implementando trigram Postgresql
+
+    // Permite separar en partes un valor para hacer un like %% super dotado
+    // Solo funciona si el string es mayor a 3 de longitud
+
+    \c nombre_bd
+    CREATE EXTENSION pg_trgm;
+    CREATE INDEX <<name_idx>> ON "<<name_app>>_<<name_model>>" USING GIN(<<name_field_to_search>> gin_trgm_ops);
+    """
+
+    def busqueda_titulo_libro_trigram(self, consulta):
+        # __trigram_similar // usara la capacidad de postgres de trigram
+        return self.filter(
+            titulo__trigram_similar=consulta
         )
 
 

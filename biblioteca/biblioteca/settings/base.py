@@ -30,6 +30,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # Postgresl
+    "django.contrib.postgres",
+
     # Local apps
     'applications.autor',
     'applications.libro',
@@ -105,9 +108,9 @@ USE_TZ = True
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Define la ruta archivos staticos del proyecto
-STATIC_URL = '/static/' # Especifica la url
-STATICFILES_DIRS = [BASE_DIR.child('static')] # Especifica la ruta carpeta
+STATIC_URL = '/static/'  # Especifica la url
+STATICFILES_DIRS = [BASE_DIR.child('static')]  # Especifica la ruta carpeta
 
 # Define la subida de archivos
-MEDIA_URL = '/media/' # Especifica la url
-MEDIA_ROOT = BASE_DIR.child('media') # Especifica la ruta caperta
+MEDIA_URL = '/media/'  # Especifica la url
+MEDIA_ROOT = BASE_DIR.child('media')  # Especifica la ruta caperta
