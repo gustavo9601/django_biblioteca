@@ -7,7 +7,7 @@ from django.views.generic import TemplateView
 from django.http import HttpResponseRedirect
 
 from .models import Prestamo
-from .forms import PrestamoFormulario
+from .forms import PrestamoFormulario, PrestamoMultipleLibrosFormulario
 
 
 # Create your views here.
@@ -93,6 +93,35 @@ class RegistrarPrestamoForma2(FormView):
             return super(RegistrarPrestamoForma2, self).form_valid(formulario)
         else:
             return HttpResponseRedirect(reverse_lazy('prestamos:prestamos_error'))
+
+
+class RegistrarPrestamoMultiplesLibros(FormView):
+    template_name = 'lector/add_multiple_prestamo.html'
+    # Asociando el formulario que controla el modelo
+    form_class = PrestamoMultipleLibrosFormulario
+
+    success_url = reverse_lazy('prestamos:prestamos_add_multiple')
+
+    def form_valid(self, formulario):
+        print("*" * 15)
+        print("Data del formulario:")
+        print(type(formulario.cleaned_data))
+        print(formulario.cleaned_data)
+
+        prestamos = []
+        for libro in formulario.cleaned_data['libros']:
+            prestamo = Prestamo(
+                lector=formulario.cleaned_data['lector'],
+                libro=libro,
+                fecha_prestamo=date.today(),
+                devuelto=False
+            )
+            prestamos.append(prestamo)
+
+        # insercion masiva
+        Prestamo.objects.bulk_create(prestamos)
+
+        return super(RegistrarPrestamoMultiplesLibros, self).form_valid(formulario)
 
 
 class ErrorCreacionPrestamoView(TemplateView):
