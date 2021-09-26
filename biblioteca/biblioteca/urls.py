@@ -20,6 +20,7 @@ from django.conf.urls.static import static
 
 from applications.autor.urls import urls_autor
 from applications.libro.urls import urls_libro
+from applications.lector.urls import urls_lector
 
 urlpatterns = [
                   path('admin/', admin.site.urls),
@@ -27,4 +28,5 @@ urlpatterns = [
                   # Local apps
                   path('', include(urls_autor)),
                   path('', include(urls_libro)),
+                  path('', include(urls_lector)),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

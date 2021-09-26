@@ -31,5 +31,13 @@ class Prestamo(models.Model):
     class Meta:
         db_table = 'prestamos'
 
+    # Funcion que se ejecuta siempre se actualiza o crea el registro
+    def save(self, *args, **kwargs):
+        print("*" * 15)
+        print("Actualizando las vistas")
+        self.libro.visitas = self.libro.visitas + 1
+        self.libro.save()
+        return super(Prestamo, self).save(*args, **kwargs)
+
     def __str__(self):
         return f"{self.libro.titulo} | {self.lector.nombres}"

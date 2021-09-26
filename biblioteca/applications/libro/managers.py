@@ -56,6 +56,7 @@ class LibroManager(models.Manager):
     CREATE INDEX <<name_idx>> ON "<<name_app>>_<<name_model>>" USING GIN(<<name_field_to_search>> gin_trgm_ops);
     
     # Otro
+    SELECT show_trgm('Rockford');
     CREATE INDEX locations_name_trigram ON locations USING gist(name gist_trgm_ops);
     """
 
